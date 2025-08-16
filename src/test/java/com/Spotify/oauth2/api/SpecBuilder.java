@@ -9,11 +9,11 @@ import io.restassured.specification.ResponseSpecification;
 
 public class SpecBuilder
 {
-    static String accessToken ="BQAXaqsF88yFoCcYM3iEzDBjUW6FGtvVTCFfDkIhr_8RVjm88s4AUsO8p9qOBNsrcIsU84YSQFyovLZa3foLb_e27v8IKoM7iMe_QeT2zhj8rroWpnK5D5Gl9xa3Ve5MMRtH1_QJ1gv_5BCEDp1ljFlbJoahZ7Iw8VLj8MBgtv1DFsK80Ni96E6qebbK85LIiGY1I_PeWzLLvLYyP7esR7koDLe5xSw50dB6-X25HiXr4z_YqeaBivMpP7u-NP3YKnkOhduu0tZ03B9vWnUJ81-BxnKVNjPTcbaVCoqN0ux3dIak-dL3dXXj";
+    static String accessToken ="BQB-VgEkYFFxGKrs4fyiQ5j3njNZUuyQOPMxK5lcbEE06rd76C0GAF7r0Q9h0ocGPlhH90fkvwI-mX2dorLf3f6dtSBfMlLsnGUzdvpx5ArtFsC5FzqTF-4qb3Nig9yNiFcFhSPX1GaArkJzjfnXqcZB6oehYhawRGfHxnIwa2BWyHYqjbcsgtBbdOkUVhckcUzqFgTYFaSFnNcM2HQb3QLeLLmZ9vHh-cDlDSJfwd4hqxfOfskohh8RS1QPqkrHDmCIGRxQzjkFCjwbOZoTB5cjMpgcASdoBvN8LsdcA2SAz9iuwL0goR9J";
 
     public static RequestSpecification getRequestSpec()
     {
-       return new RequestSpecBuilder().setBaseUri("https://api.spotify.com/").setBasePath("/v1").addHeader("Authorization","Bearer "+ accessToken).setContentType(ContentType.JSON)
+       return new RequestSpecBuilder().setBaseUri("https://api.spotify.com/").setBasePath("/v1").setContentType(ContentType.JSON)
             .log(LogDetail.ALL).build();
 
     }

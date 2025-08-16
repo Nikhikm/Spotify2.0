@@ -1,5 +1,6 @@
 package com.Spotify.oauth2.tests;
 
+import com.Spotify.oauth2.api.ApplicationAPI;
 import com.Spotify.oauth2.api.SpecBuilder;
 import com.Spotify.oauth2.pojo.GetPlaylist;
 import com.Spotify.oauth2.pojo.Playlist;
@@ -7,6 +8,7 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.testng.annotations.BeforeClass;
@@ -43,27 +45,44 @@ public class Playlists
     public void createPlaylist()
     {
         Playlist CreatePlaylistPayload = new Playlist();
-        CreatePlaylistPayload.setName("New Nikhils Automated playlist7");
+        CreatePlaylistPayload.setName("New Nikhils Automated playlist77");
         CreatePlaylistPayload.setDescription("created by Nikhil1");
 
 
-        Playlist responsePlaylists = given(SpecBuilder.getRequestSpec()).body(CreatePlaylistPayload).when().post("/users/31ckskvxosw7e3koqevgzakvm7vi/playlists").then().spec(SpecBuilder.getResponseSpec()).
-                assertThat().statusCode(201).extract().response().as(Playlist.class);
-        assertThat(responsePlaylists.getName(),equalTo(CreatePlaylistPayload.getName()));
-        assertThat(responsePlaylists.getDescription(),equalTo(CreatePlaylistPayload.getDescription()));
+//        Playlist responsePlaylists = given(SpecBuilder.getRequestSpec()).body(CreatePlaylistPayload).when().post("/users/31ckskvxosw7e3koqevgzakvm7vi/playlists").then().spec(SpecBuilder.getResponseSpec()).
+//                assertThat().statusCode(201).extract().response().as(Playlist.class);
+//        assertThat(responsePlaylists.getName(),equalTo(CreatePlaylistPayload.getName()));
+//        assertThat(responsePlaylists.getDescription(),equalTo(CreatePlaylistPayload.getDescription()));
+//
+//        PlaylistID =responsePlaylists.getId();
+//        System.out.println(PlaylistID);
+//        //assertThat(responsePlaylists.get,equalTo(CreatePlaylistPayload.getPublic()));
+
+        Response response = ApplicationAPI.post(CreatePlaylistPayload);
+        assertThat(response.statusCode(),equalTo(201));
+        Playlist responsePlaylists= response.as(Playlist.class);
+
         PlaylistID =responsePlaylists.getId();
         System.out.println(PlaylistID);
-        //assertThat(responsePlaylists.get,equalTo(CreatePlaylistPayload.getPublic()));
+
+        assertThat(responsePlaylists.getName(),equalTo(CreatePlaylistPayload.getName()));
+        assertThat(responsePlaylists.getDescription(),equalTo(CreatePlaylistPayload.getDescription()));
 
     }
 
     @Test
     public void getPlaylist()
     {
-        GetPlaylist responseGetPlaylist = given(SpecBuilder.getRequestSpec()).get("/users/31ckskvxosw7e3koqevgzakvm7vi/playlists").then().spec(SpecBuilder.getResponseSpec()).
-                assertThat().statusCode(200).extract().response().as(GetPlaylist.class);
-        int lastindex = responseGetPlaylist.getItems().size() - 1;
-        assertThat(responseGetPlaylist.getItems(),hasItem(hasProperty("name",is(equalTo("New Nikhils Automated playlist7")))));
+//        GetPlaylist responseGetPlaylist = given(SpecBuilder.getRequestSpec()).get("/users/31ckskvxosw7e3koqevgzakvm7vi/playlists").then().spec(SpecBuilder.getResponseSpec()).
+//                assertThat().statusCode(200).extract().response().as(GetPlaylist.class);
+       // int lastindex = responseGetPlaylist.getItems().size() - 1;
+
+
+        Response response = ApplicationAPI.get(PlaylistID);
+        assertThat(response.statusCode(),equalTo(200));
+        Playlist responseGetPlaylist =response.as(Playlist.class);
+
+        assertThat(responseGetPlaylist.getName(),is(equalTo("New Nikhils Automated playlist77")));
 
     }
 
@@ -73,18 +92,28 @@ public class Playlists
         System.out.println(PlaylistID);
 
         Playlist CreatePlaylistPayload = new Playlist();
-        CreatePlaylistPayload.setName("New Nikhils Automated playlist updated5");
+        CreatePlaylistPayload.setName("New Nikhils Automated playlist updated55");
         CreatePlaylistPayload.setDescription("created by Nikhil1");
-        given(SpecBuilder.getRequestSpec()).body(CreatePlaylistPayload).put("/playlists/"+PlaylistID).then().spec(responseSpecification).
-                assertThat().statusCode(200);
+
+
+       Response response= ApplicationAPI.update(CreatePlaylistPayload,PlaylistID);
+       assertThat(response.statusCode(),equalTo(200));
+
+//        given(SpecBuilder.getRequestSpec()).body(CreatePlaylistPayload).put("/playlists/"+PlaylistID).then().spec(responseSpecification).
+//                assertThat().statusCode(200);
     }
 
     @Test(dependsOnMethods = "updatePlaylist")
     public void getPlaylistAfterUpdate()
     {
-        GetPlaylist respose = given(SpecBuilder.getRequestSpec()).get("/users/31ckskvxosw7e3koqevgzakvm7vi/playlists").then().spec(responseSpecification).
-                assertThat().statusCode(200).extract().response().as(GetPlaylist.class);
-        assertThat(respose.getItems(),hasItem(hasProperty("name",is(equalTo("New Nikhils Automated playlist updated5")))));
+        Response response = ApplicationAPI.get(PlaylistID);
+        assertThat(response.statusCode(),equalTo(200));
+        Playlist responseGetPlaylist =response.as(Playlist.class);
+
+        assertThat(responseGetPlaylist.getName(),is(equalTo("New Nikhils Automated playlist updated55")));
+//        GetPlaylist respose = given(SpecBuilder.getRequestSpec()).get("/users/31ckskvxosw7e3koqevgzakvm7vi/playlists").then().spec(responseSpecification).
+//                assertThat().statusCode(200).extract().response().as(GetPlaylist.class);
+//        assertThat(respose.getItems(),hasItem(hasProperty("name",is(equalTo("New Nikhils Automated playlist updated5")))));
     }
 
 }

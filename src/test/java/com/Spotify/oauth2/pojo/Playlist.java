@@ -6,8 +6,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Playlist
 {
+    @JsonIgnore
     private boolean collaborative;
     private String description;
     private ExternalURLs external_urls;
