@@ -1,10 +1,12 @@
 package com.Spotify.oauth2.pojo;
 
 import com.Spotify.oauth2.tests.Playlists;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GetPlaylist
 {
     private String href;
