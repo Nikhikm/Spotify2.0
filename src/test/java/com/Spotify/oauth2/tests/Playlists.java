@@ -14,6 +14,8 @@ import io.restassured.specification.ResponseSpecification;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.io.FileNotFoundException;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -41,12 +43,30 @@ public class Playlists
 //
 //    }
 
+    public Playlist playlistBuilder(String name , String description){
+        return new Playlist()
+                .setName(name).setDescription(description);
+
+    }
+
+    public void assertPlaylist(Playlist responsePlaylists,Playlist CreatePlaylistPayload){
+        assertThat(responsePlaylists.getName(),equalTo(CreatePlaylistPayload.getName()));
+        assertThat(responsePlaylists.getDescription(),equalTo(CreatePlaylistPayload.getDescription()));
+
+
+    }
+
     @Test
-    public void createPlaylist()
-    {
-        Playlist CreatePlaylistPayload = new Playlist();
-        CreatePlaylistPayload.setName("New Nikhils Automated playlist77");
-        CreatePlaylistPayload.setDescription("created by Nikhil1");
+    public void createPlaylist() throws FileNotFoundException {
+
+        //####################the below line is commented due to implementation of playlistBuilder##############
+//        Playlist CreatePlaylistPayload = new Playlist();
+//        CreatePlaylistPayload.setName("New Nikhils Automated playlist77");
+//        CreatePlaylistPayload.setDescription("created by Nikhil1");
+
+        //####################the above line is commented due to implementation of playlistBuilder##############
+
+        Playlist CreatePlaylistPayload = playlistBuilder("New Nikhils Automated playlist77", "created by Nikhil1");
 
 
 //        Playlist responsePlaylists = given(SpecBuilder.getRequestSpec()).body(CreatePlaylistPayload).when().post("/users/31ckskvxosw7e3koqevgzakvm7vi/playlists").then().spec(SpecBuilder.getResponseSpec()).
@@ -65,14 +85,17 @@ public class Playlists
         PlaylistID =responsePlaylists.getId();
         System.out.println(PlaylistID);
 
-        assertThat(responsePlaylists.getName(),equalTo(CreatePlaylistPayload.getName()));
-        assertThat(responsePlaylists.getDescription(),equalTo(CreatePlaylistPayload.getDescription()));
+//        assertThat(responsePlaylists.getName(),equalTo(CreatePlaylistPayload.getName()));
+//        assertThat(responsePlaylists.getDescription(),equalTo(CreatePlaylistPayload.getDescription()));
+        //###above line is commented and used below code#############
+
+        assertPlaylist(response.as(Playlist.class),CreatePlaylistPayload);
+
 
     }
 
     @Test
-    public void getPlaylist()
-    {
+    public void getPlaylist() throws FileNotFoundException {
 //        GetPlaylist responseGetPlaylist = given(SpecBuilder.getRequestSpec()).get("/users/31ckskvxosw7e3koqevgzakvm7vi/playlists").then().spec(SpecBuilder.getResponseSpec()).
 //                assertThat().statusCode(200).extract().response().as(GetPlaylist.class);
        // int lastindex = responseGetPlaylist.getItems().size() - 1;
@@ -91,9 +114,13 @@ public class Playlists
     {
         System.out.println(PlaylistID);
 
-        Playlist CreatePlaylistPayload = new Playlist();
-        CreatePlaylistPayload.setName("New Nikhils Automated playlist updated55");
-        CreatePlaylistPayload.setDescription("created by Nikhil1");
+      Playlist CreatePlaylistPayload = playlistBuilder("New Nikhils Automated playlist updated55","created by Nikhil1");
+//####################the below line is commented due to implementation of playlistBuilder##############
+//        Playlist CreatePlaylistPayload = new Playlist();
+//        CreatePlaylistPayload.setName("New Nikhils Automated playlist updated55");
+//        CreatePlaylistPayload.setDescription("created by Nikhil1");
+
+        //####################the above line is commented due to implementation of playlistBuilder##############
 
 
        Response response= ApplicationAPI.update(CreatePlaylistPayload,PlaylistID);
@@ -104,8 +131,7 @@ public class Playlists
     }
 
     @Test(dependsOnMethods = "updatePlaylist")
-    public void getPlaylistAfterUpdate()
-    {
+    public void getPlaylistAfterUpdate() throws FileNotFoundException {
         Response response = ApplicationAPI.get(PlaylistID);
         assertThat(response.statusCode(),equalTo(200));
         Playlist responseGetPlaylist =response.as(Playlist.class);

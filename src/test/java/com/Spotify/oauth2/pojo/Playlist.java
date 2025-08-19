@@ -34,8 +34,9 @@ public class Playlist
         return description;
     }
 
-    public void setDescription(String description) {
+    public Playlist setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     public ExternalURLs getExternal_urls() {
@@ -90,16 +91,18 @@ public class Playlist
         return name;
     }
 
-    public void setName(String name) {
+    public Playlist setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public Playlist setType(String type) {
         this.type = type;
+        return this;
     }
 
     public String getUri() {
